@@ -1,4 +1,7 @@
+import tweepy
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 def to_bulk(a, size=100):
@@ -32,13 +35,13 @@ def fetch_status(api, ids):
     rs = []
     for id_block in to_bulk(ids):
         try:
-            rs += api.statuses_lookup(id=ids):
+            rs += api.statuses_lookup(id_block)
         except tweepy.TweepError as e:
             logger.warning(e)
     return rs
 
 
-def do_auth()
+def do_auth():
     ak = dict(
             consumer_key='UxlMUvN1HR9zrFxn2wugD0uKn',
             consumer_secret='NSvKMwDFgB4uGgNJ7L0ET0qGPI5FAgTY9G0DclKrz7if3j8Gax',
@@ -47,5 +50,7 @@ def do_auth()
             )
     auth = tweepy.OAuthHandler(ak['consumer_key'], ak['consumer_secret'])
     auth.set_access_token(ak['access_token'], ak['access_token_secret'])
-    return tweepy.API(auth, wait_on_rate_limit=True))
+    return tweepy.API(auth,
+            # parser=tweepy.parsers.RawParser(),
+            wait_on_rate_limit=True)
 
